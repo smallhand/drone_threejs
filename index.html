@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Three.js 測試</title>
+    <style>body { margin: 0; }</style>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="src/main.js"></script>
+
+    <div id="toast"></div>
+    <div id="hud">⏱ 00:00　🥚 0 / 0</div>
+
+    <div id="result">
+        <div class="result-card">
+        <h2>🎉 全部找到了！</h2>
+        <p id="result-time"></p>
+        <button id="restart-btn">重新開始</button>
+        </div>
+    </div>
+
+</body>
+</html>

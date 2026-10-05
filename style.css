@@ -1,0 +1,67 @@
+body { margin: 0; }
+
+#toast {
+  position: fixed;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px) scale(0.9);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+
+#hud {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+
+/* ★ 新增：全部找到之後的結果面板 */
+#result {
+  position: fixed;
+  inset: 0;                      /* 上下左右都貼齊，蓋滿整個視窗 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;          /* 沒顯示時不擋住下面的畫布 */
+  transition: opacity 0.4s ease;
+}
+#result.show {
+  opacity: 1;
+  pointer-events: auto;          /* 顯示時才接收滑鼠，按鈕才按得到 */
+}
+.result-card {
+  background: #fff;
+  color: #222;
+  padding: 32px 48px;
+  border-radius: 16px;
+  text-align: center;
+}
+.result-card button {
+  margin-top: 16px;
+  padding: 10px 24px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
