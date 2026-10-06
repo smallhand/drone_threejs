@@ -1,16 +1,15 @@
 import * as THREE from 'three';
 import { loadModel } from './loader.js';
-import { createScene, frameObject } from './scene.js';
+import { createScene, enableResize, frameObject, startRenderLoop } from './scene.js';
 import { startTimer, updateEgg, markEggFound, resetTimer, isFinished } from './timer.js';
-import { showToast } from './ui.js';
+import { hideResult, showResult, showToast } from './ui.js';
 
-
-const resultPanel = document.getElementById('result');
-const resultTime = document.getElementById('result-time');
 const restartBtn = document.getElementById('restart-btn');
-
 const loader = loadModel();
 const {scene, camera, renderer, controls} = createScene();
+
+enableResize();
+startRenderLoop(scene, camera, renderer, controls)
 
 loader.load(
   'blender_output.glb', // 放在跟 index.html 同一個資料夾
@@ -39,37 +38,14 @@ loader.load(
   (error) => console.error('載入失敗', error)
 );
 
-renderer.setAnimationLoop(() => {
-    controls.update();
-  renderer.render(scene, camera);
-});
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  //controls.handleResize();
-});
-
-
-
-function findEggRoot(object) {
-  if (object.userData.isEgg) return object;
-  let root = null;
-  object.traverseAncestors((ancestor) => {
-    if (ancestor.userData.isEgg) root = ancestor;
-  });
-  return root;
-}
-
-const raycaster = new THREE.Raycaster();
-const pointer = new THREE.Vector2();
 window.addEventListener('click', (event) => {
   if (isFinished()) return;                           // ★ 取代 gameOver
   if (event.target !== renderer.domElement) return;
 
-
   startTimer();    // ★ 第一次點擊才開始計時（之後再呼叫會直接跳過）
+
+  const pointer = new THREE.Vector2();
+  const raycaster = new THREE.Raycaster();
 
   // 1. 把滑鼠的像素座標，換算成 NDC
   pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -102,20 +78,21 @@ window.addEventListener('click', (event) => {
 
 
      if (result.allFound) {
-      finishGame(result.seconds);
+      showResult(result.seconds)
     } else {
       showToast(`🥚 已找到 ${result.foundEggs} / ${result.totalEggs}`);
     }
   }
 });
-
 restartBtn.addEventListener('click', restartGame);
 
-
-function finishGame(seconds) {
-  //controls.enabled = false;
-  resultTime.textContent = `用時 ${seconds} 秒`;
-  resultPanel.classList.add('show');
+function findEggRoot(object) {
+  if (object.userData.isEgg) return object;
+  let root = null;
+  object.traverseAncestors((ancestor) => {
+    if (ancestor.userData.isEgg) root = ancestor;
+  });
+  return root;
 }
 
 function restartGame() {
@@ -123,9 +100,8 @@ function restartGame() {
     if (obj.userData.isEgg) obj.userData.found = false;
   });
   resetTimer();                      // 同時把 finished 改回 false
-  resultPanel.classList.remove('show');
+  hideResult();
   controls.enabled = true;
-
   //controls.reset();
   //location.reload()
 }

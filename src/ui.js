@@ -1,5 +1,8 @@
+const toast = document.getElementById('toast');
+const resultPanel = document.getElementById('result');
+const resultTime = document.getElementById('result-time');
+
 export function showToast(message, duration = 2500) {
-  const toast = document.getElementById('toast');
   let toastTimer;
 
   toast.textContent = message;
@@ -9,4 +12,14 @@ export function showToast(message, duration = 2500) {
   toastTimer = setTimeout(() => {
     toast.classList.remove('show');
   }, duration);
+}
+
+
+export function showResult(seconds) {
+  resultTime.textContent = `用時 ${seconds} 秒`;
+  resultPanel.classList.add('show');
+}
+
+export function hideResult() {
+  resultPanel.classList.remove('show');
 }
