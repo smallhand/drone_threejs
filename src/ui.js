@@ -2,8 +2,9 @@ const toast = document.getElementById('toast');
 const resultPanel = document.getElementById('result');
 const resultTime = document.getElementById('result-time');
 
+let toastTimer;
+
 export function showToast(message, duration = 2500) {
-  let toastTimer;
 
   toast.textContent = message;
   toast.classList.add('show');
