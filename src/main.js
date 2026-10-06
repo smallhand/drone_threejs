@@ -8,7 +8,7 @@ const restartBtn = document.getElementById('restart-btn');
 const loader = loadModel();
 const {scene, camera, renderer, controls} = createScene();
 
-enableResize();
+enableResize(camera, renderer, controls);
 startRenderLoop(scene, camera, renderer, controls)
 
 loader.load(

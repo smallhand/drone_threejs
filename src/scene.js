@@ -49,11 +49,11 @@ export function frameObject(gltfObject, camera, controls) {
 }
 
 export function enableResize() {
-    window.addEventListener('resize', () => {
+    window.addEventListener('resize', (camera, renderer, controls) => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    //controls.handleResize();
+    controls.handleResize();
     });
 }
 
