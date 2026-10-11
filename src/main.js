@@ -14,7 +14,7 @@ enableResize(camera, renderer, controls);
 startRenderLoop(scene, camera, renderer, controls)
 
 loader.load(
-  '3d_unseen_true.glb', // 放在跟 index.html 同一個資料夾
+  'blender_output.glb', // 放在跟 index.html 同一個資料夾
   (gltf) => {
 
     frameObject(gltf, camera, controls)
