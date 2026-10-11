@@ -1,0 +1,50 @@
+#loading {
+  position: fixed;
+  inset: 0;                      /* 蓋滿整個視窗 */
+  z-index: 10;                   /* 疊在畫布與其他面板上面 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  transition: opacity 0.4s ease;
+}
+#loading.hidden {
+  opacity: 0;
+  pointer-events: none;          /* 載入完成後，不擋住下面的畫布 */
+}
+.loading-card {
+  width: min(80vw, 360px);
+  text-align: center;
+}
+#loading-text {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  white-space: pre-line;
+}
+.loading-track {
+  height: 10px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.25);
+  overflow: hidden;              /* 讓裡面的長條不會超出圓角 */
+}
+#loading-bar {
+  width: 0%;
+  height: 100%;
+  background: #4ade80;
+  transition: width 0.2s ease;
+}
+
+/* 算不出總大小時：長條改成來回滑動，不代表百分比 */
+#loading-bar.indeterminate {
+  width: 40%;
+  transition: none;
+  animation: loading-slide 1.2s ease-in-out infinite;
+}
+
+
+@keyframes loading-slide {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(250%); }
+}

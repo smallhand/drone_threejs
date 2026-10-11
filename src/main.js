@@ -2,7 +2,9 @@ import * as THREE from 'three';
 import { loadModel } from './loader.js';
 import { createScene, enableResize, frameObject, startRenderLoop } from './scene.js';
 import { startTimer, updateEgg, markEggFound, resetTimer, isFinished } from './timer.js';
-import { hideResult, showResult, showToast } from './ui.js';
+import { hideResult, showResult, showToast,
+          updateLoading, hideLoading, showLoadError,
+        } from './ui.js';
 
 const restartBtn = document.getElementById('restart-btn');
 const loader = loadModel();
@@ -12,7 +14,7 @@ enableResize(camera, renderer, controls);
 startRenderLoop(scene, camera, renderer, controls)
 
 loader.load(
-  'blender_output.glb', // 放在跟 index.html 同一個資料夾
+  '3d_unseen_true.glb', // 放在跟 index.html 同一個資料夾
   (gltf) => {
 
     frameObject(gltf, camera, controls)
@@ -23,7 +25,19 @@ loader.load(
     //});
     //gltf.scene.traverse((obj) => console.log(obj.name, `(${obj.type})`));
 
+    const EGG_NAMES = ['EnemyArmature', 'AnimalArmature001', 'AnimalArmature002']
 
+    EGG_NAMES.forEach((name) => {                         // 對每個名稱各找一次
+      const egg = gltf.scene.getObjectByName(name);
+      if (egg) {
+        egg.userData.isEgg = true;
+        egg.userData.found = false;
+        updateEgg();                                      // 每找到一個，總數 +1
+      } else {
+        console.warn(`找不到 ${name}，請確認匯出的模型裡名稱是否一致`);
+      }
+    });
+    /*
     const characterArmature = gltf.scene.getObjectByName('CharacterArmature');
     if (characterArmature) {
       characterArmature.userData.isEgg = true;
@@ -33,9 +47,14 @@ loader.load(
     } else {
       console.warn('找不到 CharacterArmature，請確認匯出的模型裡名稱是否一致');
     }
+    */
+    hideLoading();
   },
-  undefined,
-  (error) => console.error('載入失敗', error)
+  updateLoading,
+  (error) => {
+    console.error('載入失敗', error)
+    showLoadError();
+  }
 );
 
 window.addEventListener('click', (event) => {
@@ -103,5 +122,5 @@ function restartGame() {
   hideResult();
   controls.enabled = true;
   //controls.reset();
-  //location.reload()
+  location.reload()
 }
