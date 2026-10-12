@@ -14,7 +14,7 @@ enableResize(camera, renderer, controls);
 startRenderLoop(scene, camera, renderer, controls)
 
 loader.load(
-  'blender_output.glb', // 放在跟 index.html 同一個資料夾
+  'https://pub-c4d0d8df4ef94809964026a9a2aa0ca0.r2.dev/3d_unseen_true.glb', // 放在跟 index.html 同一個資料夾
   (gltf) => {
 
     frameObject(gltf, camera, controls)
@@ -26,6 +26,7 @@ loader.load(
     //gltf.scene.traverse((obj) => console.log(obj.name, `(${obj.type})`));
 
     const EGG_NAMES = ['EnemyArmature', 'AnimalArmature001', 'AnimalArmature002']
+    //const EGG_NAMES = ['CharacterArmature']
 
     EGG_NAMES.forEach((name) => {                         // 對每個名稱各找一次
       const egg = gltf.scene.getObjectByName(name);
