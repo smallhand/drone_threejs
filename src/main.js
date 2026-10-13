@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { loadModel } from './loader.js';
 import { createScene, enableResize, frameObject, startRenderLoop } from './scene.js';
 import { startTimer, updateEgg, markEggFound, resetTimer, isFinished } from './timer.js';
+import { onTap } from './tap.js';
 import { hideResult, showResult, showToast,
           updateLoading, hideLoading, showLoadError,
         } from './ui.js';
@@ -15,6 +16,7 @@ startRenderLoop(scene, camera, renderer, controls)
 
 loader.load(
   'https://pub-c4d0d8df4ef94809964026a9a2aa0ca0.r2.dev/3d_unseen_true.glb', // 放在跟 index.html 同一個資料夾
+  //'blender_output.glb', // 放在跟 index.html 同一個資料夾
   (gltf) => {
 
     frameObject(gltf, camera, controls)
@@ -58,9 +60,18 @@ loader.load(
   }
 );
 
-window.addEventListener('click', (event) => {
-  if (isFinished()) return;                           // ★ 取代 gameOver
-  if (event.target !== renderer.domElement) return;
+// 暫時的診斷程式，測完要刪掉
+//['pointerdown', 'pointerup', 'click'].forEach((type) => {
+//  window.addEventListener(type, (event) => {
+//    showToast(`${type}：${event.target.tagName}`);
+//  }, true);
+//});
+
+//window.addEventListener('click', (event) => {
+onTap(renderer.domElement, (event) => { 
+  if (isFinished()) return;
+  
+  //if (event.target !== renderer.domElement) return;
 
   startTimer();    // ★ 第一次點擊才開始計時（之後再呼叫會直接跳過）
 
