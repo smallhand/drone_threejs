@@ -133,6 +133,6 @@ function restartGame() {
   resetTimer();                      // 同時把 finished 改回 false
   hideResult();
   controls.enabled = true;
-  //controls.reset();
-  location.reload()
+  controls.reset();
+  //location.reload()
 }

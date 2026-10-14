@@ -45,6 +45,8 @@ export function frameObject(gltfObject, camera, controls) {
     camera.updateProjectionMatrix();
 
     controls.target.copy(center);
+    controls.target0.copy(controls.target);     // ★ 把目前的注視點記成 reset 要回到的注視點
+    controls.position0.copy(camera.position);   // ★ 把目前的相機位置記成 reset 要回到的位置
 
 }
 
